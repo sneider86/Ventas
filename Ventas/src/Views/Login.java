@@ -5,9 +5,11 @@
  */
 package Views;
 import com.frame.Conf.Conexion;
+import com.frame.Conf.Utilidades;
 import java.io.InputStream;
 import java.util.Properties;
 import javax.swing.JOptionPane;
+import conf.Conf;
 /**
  *
  * @author erick
@@ -68,11 +70,21 @@ public class Login extends javax.swing.JFrame {
             Properties pro = new Properties();
             InputStream in =  getClass().getResourceAsStream("/conf/PropConexion.properties");
             pro.load(in);
-            Conexion con=new Conexion(pro.getProperty("usuario"),pro.getProperty("clave"));
-            con.setBD(pro.getProperty("basedatos"));
-            con.setPuerto(pro.getProperty("puerto"));
-            con.setHost(pro.getProperty("host"));
-            con.setSSl(pro.getProperty("ssl"));
+            String passkey=Conf.obtenerKeyPass();
+            String iv=Conf.obtenerVectorIniciacion();
+            
+            String user=Utilidades.decrypt(passkey, iv, pro.getProperty("usuario"));
+            String pass=Utilidades.decrypt(passkey, iv, pro.getProperty("clave"));
+            String bd=Utilidades.decrypt(passkey, iv, pro.getProperty("basedatos"));
+            String port=Utilidades.decrypt(passkey, iv, pro.getProperty("puerto"));
+            String host=Utilidades.decrypt(passkey, iv, pro.getProperty("host"));
+            String ssl=Utilidades.decrypt(passkey, iv, pro.getProperty("ssl"));
+            
+            Conexion con=new Conexion(user,pass);
+            con.setBD(bd);
+            con.setPuerto(port);
+            con.setHost(host);
+            con.setSSl(ssl);
             con.Conectar();
             System.out.println("Se conecto");
         }catch(Exception err){
@@ -80,6 +92,7 @@ public class Login extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    
     /**
      * @param args the command line arguments
      */
