@@ -4,12 +4,18 @@
  * and open the template in the editor.
  */
 package Views;
+import Controller.ControllerLogin;
 import com.frame.Conf.Conexion;
 import com.frame.Conf.Utilidades;
 import java.io.InputStream;
 import java.util.Properties;
 import javax.swing.JOptionPane;
 import conf.Conf;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 /**
  *
  * @author erick
@@ -21,6 +27,7 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -33,13 +40,37 @@ public class Login extends javax.swing.JFrame {
     private void initComponents() {
 
         jButton1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        txtusuario = new javax.swing.JTextField();
+        txtclave = new javax.swing.JPasswordField();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Login");
+        setResizable(false);
 
         jButton1.setText("Entrar");
+        jButton1.setName("cmbentrar"); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Noto Sans", 1, 18)); // NOI18N
+        jLabel1.setText("Usuario");
+
+        jLabel2.setFont(new java.awt.Font("Noto Sans", 1, 18)); // NOI18N
+        jLabel2.setText("Clave");
+
+        txtusuario.setName("txtusuario"); // NOI18N
+
+        jButton2.setText("Cerrar");
+        jButton2.setName("cmbcerrar"); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
             }
         });
 
@@ -47,17 +78,39 @@ public class Login extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(223, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(99, 99, 99))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtusuario, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(34, 34, 34)
+                        .addComponent(txtclave, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(235, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(40, 40, 40))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtusuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtclave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         jButton1.getAccessibleContext().setAccessibleName("btnacceder");
@@ -67,30 +120,20 @@ public class Login extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try{
-            Properties pro = new Properties();
-            InputStream in =  getClass().getResourceAsStream("/conf/PropConexion.properties");
-            pro.load(in);
-            String passkey=Conf.obtenerKeyPass();
-            String iv=Conf.obtenerVectorIniciacion();
-            
-            String user=Utilidades.decrypt(passkey, iv, pro.getProperty("usuario"));
-            String pass=Utilidades.decrypt(passkey, iv, pro.getProperty("clave"));
-            String bd=Utilidades.decrypt(passkey, iv, pro.getProperty("basedatos"));
-            String port=Utilidades.decrypt(passkey, iv, pro.getProperty("puerto"));
-            String host=Utilidades.decrypt(passkey, iv, pro.getProperty("host"));
-            String ssl=Utilidades.decrypt(passkey, iv, pro.getProperty("ssl"));
-            
-            Conexion con=new Conexion(user,pass);
-            con.setBD(bd);
-            con.setPuerto(port);
-            con.setHost(host);
-            con.setSSl(ssl);
-            con.Conectar();
-            System.out.println("Se conecto");
+            ControllerLogin control=new ControllerLogin();
+            if(control.login(this.txtusuario.getText(), this.txtclave.getText().toUpperCase().trim())){
+                System.out.println("bien");
+            }else{
+                JOptionPane.showMessageDialog(null,"Usuario o clave invalidos","Login",2);
+            }
         }catch(Exception err){
-            JOptionPane.showMessageDialog(null, err.getMessage(),"Error",1);
+            JOptionPane.showMessageDialog(null,err.getMessage(),err.getCause().getMessage(),0);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     
     /**
@@ -130,5 +173,10 @@ public class Login extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPasswordField txtclave;
+    private javax.swing.JTextField txtusuario;
     // End of variables declaration//GEN-END:variables
 }
