@@ -25,6 +25,16 @@ public class Terceros {
     private final Conexion con;
     public Terceros(Conexion con){
         this.con=con;
+        this.TERID = 0;
+        this.TERDOCUMENTO = "";
+        this.TERTIPODOCUMENTO = "";
+        this.NOMBRECOMPLETO = "";
+        this.TERDIRECCION1 = "";
+        this.TERDIRECCION2 = "";
+        this.TERTELEFONO1 = "";
+        this.TERTELEFONO2 = "";
+        this.TEREMAIL = "";
+        this.TERFECHANACIMIENTO = "";
     }
     public int getTERID(){
         return this.TERID;
@@ -89,6 +99,7 @@ public class Terceros {
     public boolean login(String usuario,String clave) throws Exception{
         try{
             String sql="SELECT " +
+                            "t.TER_ID," +
                             "TER_DOCUMENTO," +
                             "TER_TIPODOCUMENTO," +
                             "TER_NOMBRECOMPLETO," +
@@ -107,7 +118,20 @@ public class Terceros {
             param[0]=new ParametrosQuery(2,usuario);
             param[1]=new ParametrosQuery(2,clave);
             ResultSet rs=this.con.consultaSeleccionParametros(param);
-            return rs.next();
+            if(rs.next()){
+                this.TERID = rs.getInt("TER_ID");
+                this.TERDOCUMENTO = rs.getString("TER_DOCUMENTO");
+                this.TERTIPODOCUMENTO = rs.getString("TER_TIPODOCUMENTO");
+                this.NOMBRECOMPLETO = rs.getString("TER_NOMBRECOMPLETO");
+                this.TERDIRECCION1 = rs.getString("TER_DIRECCION1");
+                this.TERDIRECCION2 = rs.getString("TER_DIRECCION2");
+                this.TERTELEFONO1 = rs.getString("TER_TELEFONO1");
+                this.TERTELEFONO2 = rs.getString("TER_TELEFONO2");
+                this.TEREMAIL = rs.getString("TER_EMAIL");
+                this.TERFECHANACIMIENTO = rs.getString("TER_FECHANACIMIENTO");
+                return true;
+            }
+            return false;
         }catch(Exception err){
             throw new Exception(err.getMessage(),new Throwable("Error de Base de Datos"));
         }

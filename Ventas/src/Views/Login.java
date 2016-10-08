@@ -121,8 +121,10 @@ public class Login extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try{
             ControllerLogin control=new ControllerLogin();
-            if(control.login(this.txtusuario.getText(), this.txtclave.getText().toUpperCase().trim())){
-                System.out.println("bien");
+            if(control.login(this.txtusuario.getText(), this.txtclave.getText().toUpperCase().trim())!=null){
+                Principal princ=new Principal();
+                princ.setVisible(true);
+                this.setVisible(false);
             }else{
                 JOptionPane.showMessageDialog(null,"Usuario o clave invalidos","Login",2);
             }

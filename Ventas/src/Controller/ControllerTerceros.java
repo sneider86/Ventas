@@ -4,23 +4,24 @@
  * and open the template in the editor.
  */
 package Controller;
-import Model.Terceros;
 import com.frame.Conf.Conexion;
 import com.frame.Conf.Utilidades;
 import conf.Conf;
 import java.io.InputStream;
 import java.util.Properties;
+import com.frame.Conf.ComboBoxCustom;
+import javax.swing.JOptionPane;
 /**
  *
  * @author erick
  */
-public class ControllerLogin {
+public class ControllerTerceros {
     private Conexion con;
-    public ControllerLogin() throws Exception{
+    public ControllerTerceros(){
         try{
             this.initConexion();
         }catch(Exception err){
-            throw new Exception(err.getMessage());
+            JOptionPane.showMessageDialog(null,err.getMessage(),"Error",2);
         }
     }
     private void initConexion() throws Exception{
@@ -47,26 +48,11 @@ public class ControllerLogin {
         }catch(Exception err){
             throw new Exception(err.getMessage());
         }
-    }  
-    public Terceros login(String usuario,String clave) throws Exception{
-        if(!"".equals(usuario.toUpperCase().trim())){
-            if(!"".equals(clave.toUpperCase().trim())){
-                try{
-                    this.initConexion();
-                    Terceros tercero=new Terceros(this.con);
-                    if(tercero.login(usuario, clave)){
-                        return tercero;
-                    }else{
-                        return null;
-                    }
-                }catch(Exception err){
-                    throw new Exception(err.getMessage(),err.getCause());
-                }
-            }else{
-                throw new Exception("Clave no puede estar vacia",new Throwable("Validación de dato"));
-            }
-        }else{
-            throw new Exception("Usuario no puede estar vacio",new Throwable("Validación de dato"));
-        }
+    }
+    public void llenarComboTipoDocumento(ComboBoxCustom combo){
+        
+        combo.addItem("key1","Value1");
+        combo.addItem("key2","Value2");
+        combo.addItem("key3","Value3");
     }
 }
