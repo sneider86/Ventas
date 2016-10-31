@@ -22,6 +22,7 @@ public class Terceros {
     private String TERTELEFONO2;
     private String TEREMAIL;
     private String TERFECHANACIMIENTO;
+    private Terceros_tipo_tercero tipo;
     private final Conexion con;
     public Terceros(Conexion con){
         this.con=con;
@@ -96,6 +97,9 @@ public class Terceros {
     public void setTERFECHANACIMIENTO(String TERFECHANACIMIENTO){
         this.TERFECHANACIMIENTO=TERFECHANACIMIENTO;
     }
+    public Terceros_tipo_tercero getTipoTercero(){
+        return this.tipo;
+    }
     public boolean login(String usuario,String clave) throws Exception{
         try{
             String sql="SELECT " +
@@ -108,7 +112,11 @@ public class Terceros {
                             "TER_TELEFONO1," +
                             "TER_TELEFONO2," +
                             "TER_EMAIL," +
-                            "TER_FECHANACIMIENTO " +
+                            "TER_FECHANACIMIENTO, " +
+                            "tt.TITER_ID, " +
+                            "tt.ESTADO, " +
+                            "tt.CLAVEINICIAL, " +
+                            "tt.PER_ID " +
                         "FROM ven_tercero_tipo_tercero tt " +
                         "INNER JOIN ven_terceros t ON(tt.TER_ID=t.TER_ID) " +
                         "WHERE USUARIO=? " +
@@ -129,12 +137,114 @@ public class Terceros {
                 this.TERTELEFONO2 = rs.getString("TER_TELEFONO2");
                 this.TEREMAIL = rs.getString("TER_EMAIL");
                 this.TERFECHANACIMIENTO = rs.getString("TER_FECHANACIMIENTO");
+                this.tipo=new Terceros_tipo_tercero(this.con);
+                this.tipo.setTITER_ID(rs.getInt("TITER_ID"));
+                this.tipo.setTER_ID(this.TERID);
+                this.tipo.setESTADO(rs.getString("ESTADO"));
+                this.tipo.setPER_ID(rs.getInt("PER_ID"));
+                this.tipo.setCLAVEINICIAL(rs.getInt("CLAVEINICIAL"));
+                this.con.cerrarResultyPrepared();
                 return true;
             }
             return false;
         }catch(Exception err){
             throw new Exception(err.getMessage(),new Throwable("Error de Base de Datos"));
         }
-    }      
+    }
+    public void save() throws Exception{
+        try{
+            if(this.isExist()){
+                this.update();
+            }else{
+                this.create();
+            }
+        }catch(Exception err){
+            throw new Exception(err.getMessage(),new Throwable(err.getCause().getMessage()));
+        }
+    }
+    private void create() throws Exception{
+        try{
+            String sql="INSERT INTO ven_terceros " +
+            "(TER_DOCUMENTO,TER_TIPODOCUMENTO,TER_NOMBRECOMPLETO,TER_DIRECCION1,TER_DIRECCION2," +
+            "TER_TELEFONO1,TER_TELEFONO2,TER_EMAIL,TER_FECHANACIMIENTO) " +
+            "VALUES(?,?,?,?,?,?,?,?,?)";
+            this.con.prepararConsulta(sql);
+            ParametrosQuery[] param=new ParametrosQuery[9];
+            param[0]=new ParametrosQuery(2,this.TERDOCUMENTO);
+            param[1]=new ParametrosQuery(2,this.TERTIPODOCUMENTO);
+            param[2]=new ParametrosQuery(2,this.NOMBRECOMPLETO);
+            param[3]=new ParametrosQuery(2,this.TERDIRECCION1);
+            param[4]=new ParametrosQuery(2,this.TERDIRECCION2);
+            param[5]=new ParametrosQuery(2,this.TERTELEFONO1);
+            param[6]=new ParametrosQuery(2,this.TERTELEFONO2);
+            param[7]=new ParametrosQuery(2,this.TEREMAIL);
+            param[8]=new ParametrosQuery(6,this.TERFECHANACIMIENTO);
+            this.con.consultAccion(param);
+            ResultSet rs=this.con.getPreparedStatement().getGeneratedKeys();
+            rs.next();
+            this.TERID=rs.getInt(1);
+            System.out.println("Id Sujeto: "+this.TERID);
+            this.con.cerrarResultyPrepared();
+        }catch(Exception err){
+            System.out.println(err.getMessage());
+            throw new Exception(err.getMessage(),new Throwable("Error al grabar"));
+        }
+    }
+    private void update() throws Exception{
+        try{
+            String sql="UPDATE ven_terceros " +
+            "SET TER_DOCUMENTO = ? ," +
+            "TER_TIPODOCUMENTO = ? ," +
+            "TER_NOMBRECOMPLETO = ? ," +
+            "TER_DIRECCION1 = ? ," +
+            "TER_DIRECCION2 = ? ," +
+            "TER_TELEFONO1 = ? ," +
+            "TER_TELEFONO2 = ? ," +
+            "TER_EMAIL = ? ," +
+            "TER_FECHANACIMIENTO = ? " +
+            "WHERE TER_ID = ?";
+            this.con.prepararConsulta(sql);
+            ParametrosQuery[] param=new ParametrosQuery[10];
+            param[0]=new ParametrosQuery(2,this.TERDOCUMENTO);
+            param[1]=new ParametrosQuery(2,this.TERTIPODOCUMENTO);
+            param[2]=new ParametrosQuery(2,this.NOMBRECOMPLETO);
+            param[3]=new ParametrosQuery(2,this.TERDIRECCION1);
+            param[4]=new ParametrosQuery(2,this.TERDIRECCION2);
+            param[5]=new ParametrosQuery(2,this.TERTELEFONO1);
+            param[6]=new ParametrosQuery(2,this.TERTELEFONO2);
+            param[7]=new ParametrosQuery(2,this.TEREMAIL);
+            param[8]=new ParametrosQuery(6,this.TERFECHANACIMIENTO);
+            param[9]=new ParametrosQuery(1,this.TERID);
+            this.con.consultAccion(param);
+            this.con.cerrarResultyPrepared();
+        }catch(Exception err){
+            System.out.println(err.getMessage());
+            throw new Exception(err.getMessage(),new Throwable("Error al grabar"));
+        }
+    }
+    public boolean isExist() throws Exception{
+        try{
+            String sql="SELECT " +
+                            "TER_ID FROM " +
+                            "ven_terceros " +
+                            "WHERE " +
+                            "TER_ID=? " +
+                            "OR (TER_DOCUMENTO=? AND TER_TIPODOCUMENTO=?)";
+            this.con.prepararConsulta(sql);
+            ParametrosQuery[] param=new ParametrosQuery[3];
+            param[0]=new ParametrosQuery(1,this.TERID);
+            param[1]=new ParametrosQuery(2,this.TERDOCUMENTO);
+            param[2]=new ParametrosQuery(2,this.TERTIPODOCUMENTO);
+            ResultSet rs=this.con.consultaSeleccionParametros(param);
+            if(rs.next()){
+                this.TERID=rs.getInt("TER_ID");
+                return true;
+            }else{
+                return false;
+            }
+        }catch(Exception err){
+            throw new Exception(err.getMessage(),new Throwable("Comprobacion existencia"));
+        }
+    }
             
 }

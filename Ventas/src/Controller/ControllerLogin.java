@@ -55,6 +55,8 @@ public class ControllerLogin {
                     this.initConexion();
                     Terceros tercero=new Terceros(this.con);
                     if(tercero.login(usuario, clave)){
+                        this.con.cerrarResultyPrepared();
+                        this.con.cerrarConexion();
                         return tercero;
                     }else{
                         return null;

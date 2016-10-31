@@ -5,6 +5,7 @@
  */
 package Views;
 import Controller.ControllerLogin;
+import Model.Terceros;
 import com.frame.Conf.Conexion;
 import com.frame.Conf.Utilidades;
 import java.io.InputStream;
@@ -121,8 +122,9 @@ public class Login extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try{
             ControllerLogin control=new ControllerLogin();
-            if(control.login(this.txtusuario.getText(), this.txtclave.getText().toUpperCase().trim())!=null){
-                Principal princ=new Principal();
+            Terceros ter=control.login(this.txtusuario.getText(), this.txtclave.getText().toUpperCase().trim());
+            if(ter!=null){
+                Principal princ=new Principal(ter);
                 princ.setVisible(true);
                 this.setVisible(false);
             }else{

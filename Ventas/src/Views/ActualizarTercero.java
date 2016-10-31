@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
  *
  * @author erick
  */
-public class NuevoTercero extends javax.swing.JFrame {
+public class ActualizarTercero extends javax.swing.JFrame {
     protected ControllerTerceros controller;
     protected ControllerPermisos permiso;
     /**
@@ -19,7 +19,7 @@ public class NuevoTercero extends javax.swing.JFrame {
      * @param permiso
      */
     
-    public NuevoTercero() {
+    public ActualizarTercero() {
         //this.permiso=permiso;
         initCustomComponents();
         this.setLocationRelativeTo(null);
@@ -95,6 +95,11 @@ public class NuevoTercero extends javax.swing.JFrame {
         });
 
         txtdocumento.setPlaceholder("Digite documento");
+        txtdocumento.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtdocumentoKeyReleased(evt);
+            }
+        });
 
         jLabel3.setText("Nombre Completo");
 
@@ -228,7 +233,7 @@ public class NuevoTercero extends javax.swing.JFrame {
         try{
             if(this.permiso.getGRABAR()){
                 this.controller=new ControllerTerceros();
-                this.controller.grabarTercero(this);
+                //this.controller.grabarTercero(this);
             }else{
                 JOptionPane.showMessageDialog(null,"No tiene permisos para grabar","Permiso",2);
             }
@@ -237,6 +242,12 @@ public class NuevoTercero extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_btnguardarActionPerformed
+
+    private void txtdocumentoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtdocumentoKeyReleased
+        if(!this.txtdocumento.getText().equals("")){
+            System.out.println("Texto: "+this.txtdocumento.getText());
+        }
+    }//GEN-LAST:event_txtdocumentoKeyReleased
     public String getTipoDocumento(){
         return this.cmbtipodocumento.getKey();
     }
@@ -291,14 +302,15 @@ public class NuevoTercero extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NuevoTercero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ActualizarTercero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NuevoTercero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ActualizarTercero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NuevoTercero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ActualizarTercero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NuevoTercero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ActualizarTercero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
