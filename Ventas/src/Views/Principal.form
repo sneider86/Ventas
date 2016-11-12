@@ -37,7 +37,7 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu4">
+        <Menu class="javax.swing.JMenu" name="mbodegas">
           <Properties>
             <Property name="text" type="java.lang.String" value="Bodegas"/>
           </Properties>
@@ -46,6 +46,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Agregar"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem2ActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>

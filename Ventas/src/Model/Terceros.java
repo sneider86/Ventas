@@ -246,5 +246,42 @@ public class Terceros {
             throw new Exception(err.getMessage(),new Throwable("Comprobacion existencia"));
         }
     }
-            
+    public boolean cargarTercero() throws Exception{
+        try{
+            String sql="SELECT " +
+                        "TER_ID," +
+                        "TER_NOMBRECOMPLETO," +
+                        "TER_DIRECCION1," +
+                        "TER_DIRECCION2," +
+                        "TER_TELEFONO1," +
+                        "TER_TELEFONO2," +
+                        "TER_EMAIL," +
+                        "TER_FECHANACIMIENTO " +
+                    "FROM " +
+                        "ven_terceros " +
+                    "WHERE " +
+                        "TER_DOCUMENTO=? " +
+                        "AND TER_TIPODOCUMENTO=?";
+            this.con.prepararConsulta(sql);
+            ParametrosQuery[] param=new ParametrosQuery[2];
+            param[0]=new ParametrosQuery(2,this.TERDOCUMENTO);
+            param[1]=new ParametrosQuery(2,this.TERTIPODOCUMENTO);
+            ResultSet rs=this.con.consultaSeleccionParametros(param);
+            if(rs.next()){
+                this.TERID=rs.getInt("TER_ID");
+                this.NOMBRECOMPLETO=rs.getString("TER_NOMBRECOMPLETO");
+                this.TERDIRECCION1=rs.getString("TER_DIRECCION1");
+                this.TERDIRECCION2=rs.getString("TER_DIRECCION2");
+                this.TERTELEFONO1=rs.getString("TER_TELEFONO1");
+                this.TERTELEFONO2=rs.getString("TER_TELEFONO2");
+                this.TEREMAIL=rs.getString("TER_EMAIL");
+                this.TERFECHANACIMIENTO=rs.getString("TER_FECHANACIMIENTO");
+                return true;
+            }else{
+                return false;
+            }
+        }catch(Exception err){
+            throw new Exception(err.getMessage(),new Throwable("Problemas al cargar Tercero"));
+        }
+    }        
 }

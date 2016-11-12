@@ -118,7 +118,6 @@ public class Bodegas {
             }else{
                 this.inset();
             }
-            
         }catch(Exception err){
             throw new Exception(err.getMessage(),new Throwable("Grabando"));
         }

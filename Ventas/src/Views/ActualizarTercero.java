@@ -6,6 +6,7 @@
 package Views;
 import Controller.ControllerPermisos;
 import Controller.ControllerTerceros;
+import Model.Terceros;
 import javax.swing.JOptionPane;
 /**
  *
@@ -87,7 +88,7 @@ public class ActualizarTercero extends javax.swing.JFrame {
 
         jLabel2.setText("Tipo Documento");
 
-        btnguardar.setText("Guardar");
+        btnguardar.setLabel("Actualizar");
         btnguardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnguardarActionPerformed(evt);
@@ -228,10 +229,9 @@ public class ActualizarTercero extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
     private void btnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarActionPerformed
         try{
-            if(this.permiso.getGRABAR()){
+            if(this.permiso.getACTUALIZAR()){
                 this.controller=new ControllerTerceros();
                 //this.controller.grabarTercero(this);
             }else{
@@ -242,10 +242,31 @@ public class ActualizarTercero extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_btnguardarActionPerformed
-
     private void txtdocumentoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtdocumentoKeyReleased
-        if(!this.txtdocumento.getText().equals("")){
-            System.out.println("Texto: "+this.txtdocumento.getText());
+        this.txtnombre.setText("");
+        this.txtdireccion.setText("");
+        this.txtdireccion2.setText("");
+        this.txttelefono1.setText("");
+        this.txttelefono2.setText("");
+        if(!this.cmbtipodocumento.getKey().equals("")){
+            if(!this.txtdocumento.getText().equals("")){
+                try{
+                    Terceros ter=this.controller.cargarTerceroId(this.cmbtipodocumento.getKey(), this.txtdocumento.getText());
+                    if(ter!=null){
+                        this.txtnombre.setText(ter.getNOMBRECOMPLETO());
+                        this.txtdireccion.setText(ter.getTERDIRECCION1());
+                        this.txtdireccion2.setText(ter.getTERDIRECCION2());
+                        this.txttelefono1.setText(ter.getTERTELEFONO1());
+                        this.txttelefono2.setText(ter.getTERTELEFONO2());
+                    }
+                }catch(Exception err){
+                    JOptionPane.showMessageDialog(null,err.getMessage(),err.getCause().getMessage(),0);
+                }
+            }else{
+                JOptionPane.showMessageDialog(null,"Digite un numero de Documento","Campo Requerido",2);
+            }
+        }else{
+            JOptionPane.showMessageDialog(null,"Digite un numero de Documento","Campo Requerido",2);
         }
     }//GEN-LAST:event_txtdocumentoKeyReleased
     public String getTipoDocumento(){
@@ -288,6 +309,7 @@ public class ActualizarTercero extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    @SuppressWarnings("Convert2Lambda")
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

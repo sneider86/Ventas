@@ -33,6 +33,9 @@ public class ControllerTerceros {
             JOptionPane.showMessageDialog(null,err.getMessage(),"Error",2);
         }
     }
+    public Conexion getConexion(){
+        return this.con;
+    }
     private void initConexion() throws Exception{
         try{
             Properties pro = new Properties();
@@ -68,12 +71,10 @@ public class ControllerTerceros {
                 combo.addItem(item.key,item.value);
             }
             this.con.cerrarResultyPrepared();
-            this.con.cerrarConexion();
         }catch(Exception err){
         
         }
     }
-    
     public void grabarTercero(NuevoTercero ventanatercero) throws Exception{
         if(!"".equals(ventanatercero.getDocumento().trim())){
             if(!"".equals(ventanatercero.getNombre().trim())){
@@ -214,5 +215,18 @@ public class ControllerTerceros {
             throw new Exception("Digite el numero de documento",new Throwable("Validación"));
         }        
     }
-
+    public Terceros cargarTerceroId(String tipo,String doc) throws Exception{
+        try{
+            Terceros ter=new Terceros(this.con);
+            ter.setTERTIPODOCUMENTO(tipo);
+            ter.setTERDOCUMENTO(doc);
+            if(ter.cargarTercero()){
+                return ter;
+            }else{
+                return null;
+            }
+        }catch(Exception err){
+            throw new Exception(err.getMessage(), new Throwable(err.getCause().getMessage()));
+        }
+    }
 }
