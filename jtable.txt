@@ -1,0 +1,68 @@
+DefaultTableModel model = new DefaultTableModel(); 
+JTable table = new JTable(model); 
+
+// Create a couple of columns 
+model.addColumn("Col1"); 
+model.addColumn("Col2"); 
+
+// Append a row 
+model.addRow(new Object[]{"v1", "v2"});
+
+/**
+***
+*** *********************************************
+***
+/**
+
+DefaultTableModel model = new DefaultTableModel();
+model.addColumn("Code");
+model.addColumn("Name");
+model.addColumn("Quantity");
+model.addColumn("Unit Price");
+model.addColumn("Price");
+JTable table = new JTable(model);
+
+DefaultTableModel model = (DefaultTableModel) table.getModel();
+model.addRow(new Object[]{"Column 1", "Column 2", "Column 3","Column 4","Column 5"});
+
+/**
+***
+*** *********************************************
+***
+/**
+
+DefaultTableModel model = (DefaultTableModel) MyJTable.getModel();
+
+Vector row = new Vector();
+row.add("Enter data to column 1");
+row.add("Enter data to column 2");
+row.add("Enter data to column 3");
+model.addRow(row);
+
+/**
+***
+*** *********************************************
+***
+/**
+
+Vector<Object> rowData;    
+DefaultTableModel defaultModel = new DefaultTableModel();
+if (theTable.getRowCount()>0) {
+   for (int r=0;r<theTable.getRowCount();r++) {
+      rowData = new Vector<Object>(6);
+      for (int c=0;c<theTable.getColumnCount();c++){  
+         rowData.add(theTable.getValueAt(r, c));
+      }
+      defaultModel.addRow(rowData);
+   }         
+}
+defaultModel.addRow(new Object[]{"","","","","",""});
+JTable newTable = new JTable(defaultModel);
+
+/**
+***
+*** *********************************************
+***
+/**
+
+

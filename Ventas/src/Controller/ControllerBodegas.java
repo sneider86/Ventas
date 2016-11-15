@@ -7,9 +7,12 @@ package Controller;
 
 import Model.Bodegas;
 import com.frame.Conf.Conexion;
+import com.frame.Conf.ParametrosQuery;
 import com.frame.Conf.Utilidades;
 import conf.Conf;
 import java.io.InputStream;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Properties;
 import javax.swing.JOptionPane;
 
@@ -20,6 +23,7 @@ import javax.swing.JOptionPane;
 public class ControllerBodegas {
     private Bodegas bodega;
     private Conexion con;
+    
     /**
      * Constructor del Controller
      * @throws java.lang.Exception
@@ -27,6 +31,7 @@ public class ControllerBodegas {
     public ControllerBodegas() throws Exception{
         try{
             this.initConexion();
+            this.bodega=new Bodegas(this.con);
         }catch(Exception err){
             throw new Exception();
         }
@@ -74,11 +79,39 @@ public class ControllerBodegas {
             throw new Exception(err.getMessage());
         }
     }
+    /**
+     * Agrega una nueva Bodega
+     * @throws Exception 
+     */
     public void nuevaBodega()throws Exception{
         try{
-            this.bodega.save();
+            this.bodega.nuevo();
         }catch(Exception err){
-            JOptionPane.showMessageDialog(null,err.getMessage(),err.getCause().getMessage(),1);
+            throw new Exception(err.getMessage(),new Throwable(err.getCause()));
         }
+    }
+    /**
+     * Cargar los datos para la Grilla
+     * @return ArrayList
+     * @throws Exception 
+     */
+    public ArrayList<Object> loadDataGrid() throws Exception{
+        ArrayList<Object> list=new ArrayList<>();
+        try{
+            String sql="SELECT BOD_ID,BOD_NOMBRE,BOD_ESTADO FROM ven_bodega";
+            this.con.prepararConsulta(sql);
+            ParametrosQuery param[]=new ParametrosQuery[0];
+            ResultSet rs=this.con.consultaSeleccionParametros(param);
+            while(rs.next()){
+                Model.Bodegas obj=new Bodegas(this.con);
+                obj.setBOD_ID(rs.getInt("BOD_ID"));
+                obj.setBOD_NOMBRE(rs.getString("BOD_NOMBRE"));
+                obj.setBOD_ESTADO(rs.getString("BOD_ESTADO"));
+                list.add(obj);
+            }
+            return list;
+        }catch(Exception err){
+            throw new Exception(err.getMessage(),new Throwable("Problemas al cargar grilla"));
+        }    
     }
 }

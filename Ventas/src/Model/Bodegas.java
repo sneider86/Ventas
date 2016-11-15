@@ -136,9 +136,29 @@ public class Bodegas {
             this.con.prepararConsulta(sql);
             this.con.consultAccion(param);
             ResultSet rs=this.con.getPreparedStatement().getGeneratedKeys();
+            rs.next();
             this.BOD_ID=rs.getInt(1);
         }catch(Exception err){
             throw new Exception(err.getMessage(),new Throwable("Nuevo"));
+        }
+    }
+    /**
+     * Graba datos de una bodega nueva
+     * @throws Exception 
+     */
+    public void nuevo() throws Exception{
+        try{
+            if(this.BOD_ID>0){
+                if(this.isExist()){
+                    throw new Exception("No se pudo grabar la bodega porque ya existe.",new Throwable("Grabando"));
+                }else{
+                    this.inset();
+                }
+            }else{
+                this.inset();
+            }
+        }catch(Exception err){
+            throw new Exception(err.getMessage(),new Throwable("Grabando"));
         }
     }
     

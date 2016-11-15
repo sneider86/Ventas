@@ -5,7 +5,11 @@
  */
 package Views;
 
+import Controller.ControllerBodegas;
 import Controller.ControllerPermisos;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -24,6 +28,27 @@ public class Bodegas extends javax.swing.JFrame {
     public Bodegas(ControllerPermisos permisos) {
         initComponents();
         this.permisos=permisos;
+        //model.addRow(new Object[]{"v1", "v2"});
+        Object [][] rows = null;
+        try{
+            ControllerBodegas controller=new ControllerBodegas();
+            ArrayList list=controller.loadDataGrid();
+            rows = new Object[list.size()][3];
+            for(int i=0;i<list.size();i++){
+                Model.Bodegas bod=(Model.Bodegas)list.get(i);
+                String e="";
+                if(bod.getBOD_ESTADO().equals("1")){
+                    e="Activo";
+                }else{
+                    e="Inactivo";
+                }
+                rows[i]=new Object[]{bod.getBOD_ID(),bod.getBOD_NOMBRE(),e};
+            }
+        }catch(Exception err){
+            System.out.println(err.getMessage());
+        }
+        javax.swing.table.DefaultTableModel model=new javax.swing.table.DefaultTableModel(rows,new String[]{"Id","Nombre","Estado"});
+        tbodegas.setModel(model);
         this.setLocationRelativeTo(null);
     }
 
@@ -37,14 +62,14 @@ public class Bodegas extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbodegas = new javax.swing.JTable();
         cmbnuevo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Bodegas");
         setResizable(false);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbodegas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
                 {null, null},
@@ -63,8 +88,13 @@ public class Bodegas extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setDragEnabled(true);
-        jScrollPane1.setViewportView(jTable1);
+        tbodegas.setDragEnabled(true);
+        tbodegas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbodegasMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tbodegas);
 
         cmbnuevo.setLabel("Nuevo");
         cmbnuevo.addActionListener(new java.awt.event.ActionListener() {
@@ -101,10 +131,15 @@ public class Bodegas extends javax.swing.JFrame {
         if(this.permisos.getGRABAR()){
             NuevaBodega nb=new NuevaBodega(this.permisos);
             nb.setVisible(true);
+            this.dispose();
         }else{
             JOptionPane.showMessageDialog(null,"No tiene permisos para agregar bodega","Permiso",2);
         }
     }//GEN-LAST:event_cmbnuevoActionPerformed
+
+    private void tbodegasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbodegasMouseClicked
+        System.out.println("Row: "+tbodegas.getSelectedRow()+"--Col: "+tbodegas.getSelectedColumn());
+    }//GEN-LAST:event_tbodegasMouseClicked
 
     /**
      * @param args the command line arguments
@@ -144,6 +179,6 @@ public class Bodegas extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cmbnuevo;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tbodegas;
     // End of variables declaration//GEN-END:variables
 }
