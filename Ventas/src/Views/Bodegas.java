@@ -7,8 +7,6 @@ package Views;
 
 import Controller.ControllerBodegas;
 import Controller.ControllerPermisos;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -28,7 +26,6 @@ public class Bodegas extends javax.swing.JFrame {
     public Bodegas(ControllerPermisos permisos) {
         initComponents();
         this.permisos=permisos;
-        //model.addRow(new Object[]{"v1", "v2"});
         Object [][] rows = null;
         try{
             ControllerBodegas controller=new ControllerBodegas();
@@ -36,6 +33,7 @@ public class Bodegas extends javax.swing.JFrame {
             rows = new Object[list.size()][3];
             for(int i=0;i<list.size();i++){
                 Model.Bodegas bod=(Model.Bodegas)list.get(i);
+                @SuppressWarnings("UnusedAssignment")
                 String e="";
                 if(bod.getBOD_ESTADO().equals("1")){
                     e="Activo";
@@ -140,7 +138,6 @@ public class Bodegas extends javax.swing.JFrame {
     private void tbodegasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbodegasMouseClicked
         try{
             int row=tbodegas.getSelectedRow();
-            //int col=tbodegas.getSelectedColumn();
             int col=0;
             int id=Integer.parseInt(tbodegas.getValueAt(row,col).toString());
             ActualizarBodega act=new ActualizarBodega(this.permisos,id);
@@ -179,10 +176,8 @@ public class Bodegas extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Bodegas().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new Bodegas().setVisible(true);
         });
     }
 
