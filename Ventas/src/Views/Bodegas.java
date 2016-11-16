@@ -138,7 +138,17 @@ public class Bodegas extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbnuevoActionPerformed
 
     private void tbodegasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbodegasMouseClicked
-        System.out.println("Row: "+tbodegas.getSelectedRow()+"--Col: "+tbodegas.getSelectedColumn());
+        try{
+            int row=tbodegas.getSelectedRow();
+            //int col=tbodegas.getSelectedColumn();
+            int col=0;
+            int id=Integer.parseInt(tbodegas.getValueAt(row,col).toString());
+            ActualizarBodega act=new ActualizarBodega(this.permisos,id);
+            this.dispose();
+            act.setVisible(true);
+        }catch(NumberFormatException er){
+        
+        }
     }//GEN-LAST:event_tbodegasMouseClicked
 
     /**

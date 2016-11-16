@@ -109,9 +109,57 @@ public class ControllerBodegas {
                 obj.setBOD_ESTADO(rs.getString("BOD_ESTADO"));
                 list.add(obj);
             }
+            this.con.cerrarResultyPrepared();
+            this.con.cerrarConexion();
             return list;
         }catch(Exception err){
             throw new Exception(err.getMessage(),new Throwable("Problemas al cargar grilla"));
         }    
     }
+    /**
+     * 
+     * @param id
+     * @return Model.Bodegas
+     * @throws Exception 
+     */
+    public Model.Bodegas cargarBodegaId(int id) throws Exception{
+        try{
+            Model.Bodegas bod=new Model.Bodegas(this.con);
+            bod.setBOD_ID(id);
+            if(bod.cargar()){
+                this.con.cerrarResultyPrepared();
+                this.con.cerrarConexion();
+                return bod;
+            }else{
+                this.con.cerrarResultyPrepared();
+                this.con.cerrarConexion();
+                return null;
+            }
+        }catch(Exception err){
+            String error=err.getMessage();
+            String causa=err.getCause().getMessage();
+            this.con.cerrarResultyPrepared();
+            this.con.cerrarConexion();
+            throw new Exception(error,new Throwable(causa));
+        }
+    }
+    /**
+     * 
+     * @param id de la bodega
+     * @param nombre de la bodega
+     * @param estado de la bodega
+     * @throws Exception 
+     */
+    public void actualizarBodega(int id,String nombre,String estado) throws Exception{
+        try{
+            Model.Bodegas bod=new Model.Bodegas(this.con);
+            bod.setBOD_ID(id);
+            bod.setBOD_NOMBRE(nombre);
+            bod.setBOD_ESTADO(estado);
+            bod.actualizar();
+        }catch(Exception err){
+            throw new Exception(err.getMessage(),new Throwable(err.getCause().getMessage()));
+        }
+    }
+    
 }

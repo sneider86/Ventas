@@ -56,6 +56,8 @@ public class ControllerPermisos {
             this.GRABAR=false;
             this.ACTUALIZAR=false;
            this.obtenerPermisos();
+           this.con.cerrarResultyPrepared();
+           this.con.cerrarConexion();
         }catch(Exception err){
             throw new Exception(err.getMessage(),new Throwable(err.getCause().getMessage()));
         }
@@ -186,6 +188,8 @@ public class ControllerPermisos {
                 this.GRABAR=g;
                 this.ACTUALIZAR=a;
             }
+            this.con.cerrarResultyPrepared();
+            this.con.cerrarConexion();
         }catch(Exception err){
             throw new Exception(err.getMessage(),new Throwable("Error al obener permisos"));
         }

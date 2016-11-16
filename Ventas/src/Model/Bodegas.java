@@ -90,7 +90,7 @@ public class Bodegas {
      */
     private boolean isExist() throws Exception{
         try{
-            String sql="SELECT BOD_ID"
+            String sql="SELECT BOD_ID "
                     + "FROM ven_bodega "
                     + "WHERE "
                     + "BOD_ID = ?";
@@ -159,6 +159,54 @@ public class Bodegas {
             }
         }catch(Exception err){
             throw new Exception(err.getMessage(),new Throwable("Grabando"));
+        }
+    }
+    /**
+     * Obtiene los datos de una Bodega por el id
+     * @return boolean
+     * @throws Exception 
+     */
+    public boolean cargar() throws Exception{
+        try{
+            String sql="SELECT BOD_ID,BOD_NOMBRE,BOD_ESTADO "
+                    + "FROM ven_bodega "
+                    + "WHERE "
+                    + "BOD_ID = ?";
+            this.con.prepararConsulta(sql);
+            ParametrosQuery[] param=new ParametrosQuery[1];
+            param[0]=new ParametrosQuery(1,this.BOD_ID);
+            ResultSet rs=this.con.consultaSeleccionParametros(param);
+            if(rs.next()){
+                this.BOD_NOMBRE=rs.getString("BOD_NOMBRE");
+                this.BOD_ESTADO=rs.getString("BOD_ESTADO");
+                return true;
+            }else{
+                return false;
+            }
+        }catch(Exception err){
+            throw new Exception(err.getMessage(),new Throwable("Cargando Datos"));
+        }
+    }
+    public void actualizar() throws Exception{
+        try{
+            if(this.BOD_ID>0){
+                if(this.isExist()){
+                    String sql="UPDATE ven_bodega SET BOD_NOMBRE=?,BOD_ESTADO=? WHERE BOD_ID=?";
+                    this.con.prepararConsulta(sql);
+                    ParametrosQuery param[]=new ParametrosQuery[3];
+                    param[0]=new ParametrosQuery(2,this.BOD_NOMBRE);
+                    param[1]=new ParametrosQuery(2,this.BOD_ESTADO);
+                    param[2]=new ParametrosQuery(1,this.BOD_ID);
+                    this.con.consultAccion(param);
+                    
+                }else{
+                    throw new Exception("No se pudo actualizar porque no existe el codigo de bodega",new Throwable("Actualizando"));
+                }
+            }else{
+                throw new Exception("Codigo de Bodega incorrecto",new Throwable("Actualizando"));
+            }
+        }catch(Exception err){
+            throw new Exception(err.getMessage(),new Throwable("Actualizando"));
         }
     }
     

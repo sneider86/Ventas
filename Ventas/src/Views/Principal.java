@@ -51,7 +51,6 @@ public class Principal extends javax.swing.JFrame {
         this.tercero=tercero;
         try{
             ControllerPermisos pterceros=new ControllerPermisos(this.tercero.getTipoTercero().getPER_ID(),1);
-            System.out.println(pterceros.getVER());
         }catch(Exception err){
             JOptionPane.showMessageDialog(null,err.getMessage(),err.getCause().getMessage(),1);
         }
@@ -104,9 +103,9 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(mtercero);
 
-        mbodegas.setText("Bodegas");
+        mbodegas.setText("Administrar");
 
-        jMenuItem2.setText("Agregar");
+        jMenuItem2.setText("Bodegas");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem2ActionPerformed(evt);
