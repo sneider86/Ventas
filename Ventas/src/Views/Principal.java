@@ -28,6 +28,7 @@ public class Principal extends javax.swing.JFrame {
             pterceros=new ControllerPermisos(this.tercero.getTipoTercero().getPER_ID(),1);
             if(!pterceros.getVER()){
                 this.mtercero.setVisible(false);
+                this.jmadminterceros.setVisible(false);
             }
             pbodegas=new ControllerPermisos(this.tercero.getTipoTercero().getPER_ID(),2);
             if(!pbodegas.getVER()){
@@ -71,8 +72,8 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         mbodegas = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        jmadminbodegas = new javax.swing.JMenuItem();
+        jmadminterceros = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Principal");
@@ -102,21 +103,21 @@ public class Principal extends javax.swing.JFrame {
 
         mbodegas.setText("Administrar");
 
-        jMenuItem2.setText("Bodegas");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        jmadminbodegas.setText("Bodegas");
+        jmadminbodegas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                jmadminbodegasActionPerformed(evt);
             }
         });
-        mbodegas.add(jMenuItem2);
+        mbodegas.add(jmadminbodegas);
 
-        jMenuItem4.setText("Terceros");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        jmadminterceros.setText("Terceros");
+        jmadminterceros.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                jmadmintercerosActionPerformed(evt);
             }
         });
-        mbodegas.add(jMenuItem4);
+        mbodegas.add(jmadminterceros);
 
         jMenuBar1.add(mbodegas);
 
@@ -149,15 +150,16 @@ public class Principal extends javax.swing.JFrame {
         act.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void jmadminbodegasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmadminbodegasActionPerformed
         Views.Bodegas bod=new Bodegas(this.pbodegas);
         bod.setVisible(true);
     //ControllerBodegas cont=new ControllerBodegas();
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_jmadminbodegasActionPerformed
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+    private void jmadmintercerosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmadmintercerosActionPerformed
+        Views.Terceros ter=new Views.Terceros(this.pterceros);
+        ter.setVisible(true);
+    }//GEN-LAST:event_jmadmintercerosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -198,9 +200,9 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jmadminbodegas;
+    private javax.swing.JMenuItem jmadminterceros;
     private javax.swing.JMenu mbodegas;
     private javax.swing.JMenu mtercero;
     // End of variables declaration//GEN-END:variables

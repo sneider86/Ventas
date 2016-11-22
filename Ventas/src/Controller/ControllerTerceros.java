@@ -17,6 +17,8 @@ import Model.Terceros;
 import Model.Terceros_tipo_tercero;
 import Views.ActualizarTercero;
 import Views.NuevoTercero;
+import com.frame.Conf.ParametrosQuery;
+import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -227,6 +229,37 @@ public class ControllerTerceros {
             }
         }catch(Exception err){
             throw new Exception(err.getMessage(), new Throwable(err.getCause().getMessage()));
+        }
+    }
+    public ArrayList<Object> loadDataGridAll() throws Exception{
+        try{
+            ArrayList<Object> list=new ArrayList<>();
+            String sql="SELECT TER_ID,TER_DOCUMENTO,TER_TIPODOCUMENTO,TER_NOMBRECOMPLETO,TER_DIRECCION1, " +
+                            "TER_DIRECCION2,TER_TELEFONO1,TER_TELEFONO2,TER_EMAIL,TER_FECHANACIMIENTO " +
+                            "FROM ven_terceros";
+            this.con.prepararConsulta(sql);
+            ParametrosQuery param[]=new ParametrosQuery[0];
+            
+            ResultSet rs=this.con.consultaSeleccionParametros(param);
+            while(rs.next()){
+                Model.Terceros ter=new Model.Terceros(this.con);
+                ter.setTERID(rs.getInt("TER_ID"));
+                ter.setTERTIPODOCUMENTO(rs.getString("TER_TIPODOCUMENTO"));
+                ter.setTERDOCUMENTO(rs.getString("TER_DOCUMENTO"));
+                ter.setNOMBRECOMPLETO(rs.getString("TER_NOMBRECOMPLETO"));
+                ter.setTERDIRECCION1(rs.getString("TER_DIRECCION1"));
+                ter.setTERDIRECCION2(rs.getString("TER_DIRECCION2"));
+                ter.setTERTELEFONO1(rs.getString("TER_TELEFONO1"));
+                ter.setTERTELEFONO2(rs.getString("TER_TELEFONO2"));
+                ter.setTEREMAIL(rs.getString("TER_EMAIL"));
+                ter.setTERFECHANACIMIENTO(rs.getString("TER_FECHANACIMIENTO"));
+                list.add(ter);
+            }
+            this.con.cerrarResultyPrepared();
+            this.con.cerrarConexion();
+            return list;
+        }catch(Exception err){
+            throw new Exception(err.getMessage(),new Throwable("Error al cargar Grilla"));
         }
     }
 }

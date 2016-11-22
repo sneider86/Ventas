@@ -6,6 +6,9 @@
 package Views;
 
 import Controller.ControllerPermisos;
+import Controller.ControllerTerceros;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,6 +25,22 @@ public class Terceros extends javax.swing.JFrame {
     public Terceros(ControllerPermisos permisos) {
         this.permisos=permisos;
         initComponents();
+        Object [][] rows = null;
+        try{
+            ControllerTerceros controller=new ControllerTerceros();
+            ArrayList list=controller.loadDataGridAll();
+            rows = new Object[list.size()][10];
+            for(int i=0;i<list.size();i++){
+                Model.Terceros ter=(Model.Terceros)list.get(i);
+                rows[i]=new Object[]{ter.getTERID(),ter.getTERDOCUMENTO(),ter.getNOMBRECOMPLETO(),ter.getTERDIRECCION1(),ter.getTERDIRECCION2(),ter.getTERTELEFONO1(),ter.getTERTELEFONO2() };
+            }
+            //rows[i]=new Object[]{bod.getBOD_ID(),bod.getBOD_NOMBRE(),e};
+        }catch(Exception err){
+            JOptionPane.showMessageDialog(null, err.getMessage(), err.getCause().getMessage(),1);
+        }
+        javax.swing.table.DefaultTableModel model=new javax.swing.table.DefaultTableModel(rows,new String[]{"Id","Documento","Nombre Completo","Dir°1","Dir°2","Telefono°1","Telefono°2"});
+        tterceros.setModel(model);
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -44,7 +63,7 @@ public class Terceros extends javax.swing.JFrame {
         txtnombre = new javax.swing.JTextField();
         btnbuscar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tterceros = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Terceros");
@@ -65,7 +84,7 @@ public class Terceros extends javax.swing.JFrame {
 
         btnbuscar.setText("Buscar");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tterceros.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -76,7 +95,7 @@ public class Terceros extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tterceros);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -175,7 +194,7 @@ public class Terceros extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tterceros;
     private com.frame.Conf.TextFieldCustom txtdocumento;
     private javax.swing.JTextField txtnombre;
     // End of variables declaration//GEN-END:variables
