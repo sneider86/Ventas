@@ -14,7 +14,6 @@ import java.io.InputStream;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Properties;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -161,5 +160,4 @@ public class ControllerBodegas {
             throw new Exception(err.getMessage(),new Throwable(err.getCause().getMessage()));
         }
     }
-    
 }

@@ -66,6 +66,7 @@ public class ActualizarBodega extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Nueva Bodega");
+        setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
@@ -141,7 +142,7 @@ public class ActualizarBodega extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null,"Debe ingresar el nombre de la bodega","Advertencia",2);
             }
         }else{
-            JOptionPane.showMessageDialog(null,"No tiene permisos para agregar bodega","Permiso",2);
+            JOptionPane.showMessageDialog(null,"No tiene permisos para actualizar la bodega","Permiso",2);
         }
     }//GEN-LAST:event_btngrabarActionPerformed
 
