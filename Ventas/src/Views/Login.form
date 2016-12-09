@@ -102,10 +102,14 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txtusuario">
       <Properties>
+        <Property name="text" type="java.lang.String" value="eestraga"/>
         <Property name="name" type="java.lang.String" value="txtusuario" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JPasswordField" name="txtclave">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="123456"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="jButton2">
       <Properties>

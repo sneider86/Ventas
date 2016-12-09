@@ -45,7 +45,7 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="cmbtipodocumento" pref="151" max="32767" attributes="0"/>
-                          <Component id="txtnombre" max="32767" attributes="0"/>
+                          <Component id="txtnombre" pref="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
@@ -77,14 +77,14 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                       <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtnombre" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtnombre" alignment="3" min="-2" pref="19" max="-2" attributes="0"/>
                   </Group>
                   <Component id="chkbuq2" min="-2" max="-2" attributes="0"/>
                   <Component id="btnbuscar" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="180" max="-2" attributes="0"/>
-              <EmptySpace pref="15" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -122,6 +122,9 @@
         </Property>
         <Property name="selected" type="boolean" value="true"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="chkbuq1MouseClicked"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JRadioButton" name="chkbuq2">
       <Properties>
@@ -129,8 +132,9 @@
           <ComponentRef name="grptipobusqueda"/>
         </Property>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtnombre">
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="chkbuq2MouseClicked"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnbuscar">
       <Properties>
@@ -148,15 +152,26 @@
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
               <Table columnCount="4" rowCount="4">
-                <Column editable="true" title="Title 1" type="java.lang.Object"/>
-                <Column editable="true" title="Title 2" type="java.lang.Object"/>
-                <Column editable="true" title="Title 3" type="java.lang.Object"/>
-                <Column editable="true" title="Title 4" type="java.lang.Object"/>
+                <Column editable="false" title="Title 1" type="java.lang.Object"/>
+                <Column editable="false" title="Title 2" type="java.lang.Object"/>
+                <Column editable="false" title="Title 3" type="java.lang.Object"/>
+                <Column editable="false" title="Title 4" type="java.lang.Object"/>
               </Table>
             </Property>
+            <Property name="autoResizeMode" type="int" value="0"/>
+            <Property name="columnSelectionAllowed" type="boolean" value="true"/>
           </Properties>
         </Component>
       </SubComponents>
     </Container>
+    <Component class="com.frame.Conf.TextFieldCustom" name="txtnombre">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+        <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+          <Insets value="[0, 5, 0, 0]"/>
+        </Property>
+        <Property name="placeholder" type="java.lang.String" value="Nombre Completo"/>
+      </Properties>
+    </Component>
   </SubComponents>
 </Form>

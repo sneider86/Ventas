@@ -65,6 +65,9 @@ public class ControllerTerceros {
     }
     public void llenarComboTipoDocumento(ComboBoxCustom combo){
         try{
+            if(this.con.getCon().isClosed()){
+                this.initConexion();
+            }
             Config_general config=new Config_general(this.con);
             config.setCONF_COMPONENTE("TIPO_DOCUMENTO");
             ArrayList lista=config.obtenerListadoConf();
@@ -78,6 +81,9 @@ public class ControllerTerceros {
         }
     }
     public void grabarTercero(NuevoTercero ventanatercero) throws Exception{
+        if(this.con.getCon().isClosed()){
+            this.initConexion();
+        }
         if(!"".equals(ventanatercero.getDocumento().trim())){
             if(!"".equals(ventanatercero.getNombre().trim())){
                 if(!"".equals(ventanatercero.getDireccion1().trim())){
@@ -148,6 +154,9 @@ public class ControllerTerceros {
         }        
     }
     public void ActualizarTercero(ActualizarTercero ventanatercero) throws Exception{
+        if(this.con.getCon().isClosed()){
+            this.initConexion();
+        }
         if(!"".equals(ventanatercero.getDocumento().trim())){
             if(!"".equals(ventanatercero.getNombre().trim())){
                 if(!"".equals(ventanatercero.getDireccion1().trim())){
@@ -219,6 +228,9 @@ public class ControllerTerceros {
     }
     public Terceros cargarTerceroId(String tipo,String doc) throws Exception{
         try{
+            if(this.con.getCon().isClosed()){
+                this.initConexion();
+            }
             Terceros ter=new Terceros(this.con);
             ter.setTERTIPODOCUMENTO(tipo);
             ter.setTERDOCUMENTO(doc);
@@ -233,6 +245,9 @@ public class ControllerTerceros {
     }
     public ArrayList<Object> loadDataGridAll() throws Exception{
         try{
+            if(this.con.getCon().isClosed()){
+                this.initConexion();
+            }
             ArrayList<Object> list=new ArrayList<>();
             String sql="SELECT TER_ID,TER_DOCUMENTO,TER_TIPODOCUMENTO,TER_NOMBRECOMPLETO,TER_DIRECCION1, " +
                             "TER_DIRECCION2,TER_TELEFONO1,TER_TELEFONO2,TER_EMAIL,TER_FECHANACIMIENTO " +

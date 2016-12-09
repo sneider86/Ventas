@@ -9,6 +9,7 @@ import Controller.ControllerPermisos;
 import Controller.ControllerTerceros;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollBar;
 
 /**
  *
@@ -34,12 +35,26 @@ public class Terceros extends javax.swing.JFrame {
                 Model.Terceros ter=(Model.Terceros)list.get(i);
                 rows[i]=new Object[]{ter.getTERID(),ter.getTERDOCUMENTO(),ter.getNOMBRECOMPLETO(),ter.getTERDIRECCION1(),ter.getTERDIRECCION2(),ter.getTERTELEFONO1(),ter.getTERTELEFONO2() };
             }
-            //rows[i]=new Object[]{bod.getBOD_ID(),bod.getBOD_NOMBRE(),e};
+            controller.llenarComboTipoDocumento(this.cmbtipodocumento);
         }catch(Exception err){
             JOptionPane.showMessageDialog(null, err.getMessage(), err.getCause().getMessage(),1);
         }
         javax.swing.table.DefaultTableModel model=new javax.swing.table.DefaultTableModel(rows,new String[]{"Id","Documento","Nombre Completo","Dir°1","Dir°2","Telefono°1","Telefono°2"});
+        model.isCellEditable(0,0);
         tterceros.setModel(model);
+        tterceros.getColumnModel().getColumn(0).setMaxWidth(0);
+        tterceros.getColumnModel().getColumn(0).setMinWidth(0);
+        tterceros.getColumnModel().getColumn(0).setPreferredWidth(0);
+        tterceros.getColumnModel().getColumn(1).setPreferredWidth(150);
+        tterceros.getColumnModel().getColumn(2).setPreferredWidth(300);
+        tterceros.getColumnModel().getColumn(3).setPreferredWidth(180);
+        tterceros.getColumnModel().getColumn(4).setPreferredWidth(180);
+        tterceros.getColumnModel().getColumn(5).setPreferredWidth(120);
+        tterceros.getColumnModel().getColumn(6).setPreferredWidth(120);
+        for(int i=0;i<=6;i++){
+            tterceros.getColumnModel().getColumn(i).setResizable(false);
+        }
+        tterceros.getTableHeader().setReorderingAllowed(false);
         this.setLocationRelativeTo(null);
     }
 
@@ -60,10 +75,10 @@ public class Terceros extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         chkbuq1 = new javax.swing.JRadioButton();
         chkbuq2 = new javax.swing.JRadioButton();
-        txtnombre = new javax.swing.JTextField();
         btnbuscar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tterceros = new javax.swing.JTable();
+        txtnombre = new com.frame.Conf.TextFieldCustom();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Terceros");
@@ -79,8 +94,18 @@ public class Terceros extends javax.swing.JFrame {
 
         grptipobusqueda.add(chkbuq1);
         chkbuq1.setSelected(true);
+        chkbuq1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                chkbuq1MouseClicked(evt);
+            }
+        });
 
         grptipobusqueda.add(chkbuq2);
+        chkbuq2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                chkbuq2MouseClicked(evt);
+            }
+        });
 
         btnbuscar.setText("Buscar");
 
@@ -94,8 +119,22 @@ public class Terceros extends javax.swing.JFrame {
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tterceros.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tterceros.setColumnSelectionAllowed(true);
         jScrollPane1.setViewportView(tterceros);
+
+        txtnombre.setEditable(false);
+        txtnombre.setMargin(new java.awt.Insets(0, 5, 0, 0));
+        txtnombre.setPlaceholder("Nombre Completo");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -116,7 +155,7 @@ public class Terceros extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(cmbtipodocumento, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
-                            .addComponent(txtnombre))
+                            .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
@@ -140,16 +179,34 @@ public class Terceros extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel3)
-                        .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(chkbuq2)
                     .addComponent(btnbuscar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void chkbuq2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_chkbuq2MouseClicked
+        if(this.chkbuq2.isSelected()){
+            this.txtnombre.setEditable(true);
+            this.txtdocumento.setEditable(false);
+            this.cmbtipodocumento.setEditable(false);
+            this.txtdocumento.setText("");
+        }
+    }//GEN-LAST:event_chkbuq2MouseClicked
+
+    private void chkbuq1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_chkbuq1MouseClicked
+        if(this.chkbuq1.isSelected()){
+            this.txtnombre.setEditable(false);
+            this.txtdocumento.setEditable(true);
+            this.cmbtipodocumento.setEditable(true);
+            this.txtnombre.setText("");
+        }
+    }//GEN-LAST:event_chkbuq1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -196,6 +253,6 @@ public class Terceros extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tterceros;
     private com.frame.Conf.TextFieldCustom txtdocumento;
-    private javax.swing.JTextField txtnombre;
+    private com.frame.Conf.TextFieldCustom txtnombre;
     // End of variables declaration//GEN-END:variables
 }

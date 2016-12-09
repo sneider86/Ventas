@@ -47,6 +47,13 @@ public class Bodegas extends javax.swing.JFrame {
         }
         javax.swing.table.DefaultTableModel model=new javax.swing.table.DefaultTableModel(rows,new String[]{"Id","Nombre","Estado"});
         tbodegas.setModel(model);
+        tbodegas.getColumnModel().getColumn(0).setMaxWidth(0);
+        tbodegas.getColumnModel().getColumn(0).setMinWidth(0);
+        tbodegas.getColumnModel().getColumn(0).setPreferredWidth(0);
+        tbodegas.getColumnModel().getColumn(0).setResizable(false);
+        tbodegas.getColumnModel().getColumn(1).setPreferredWidth(200);
+        tbodegas.getColumnModel().getColumn(2).setPreferredWidth(120);
+        tbodegas.getTableHeader().setReorderingAllowed(false);
         this.setLocationRelativeTo(null);
     }
 
@@ -86,6 +93,7 @@ public class Bodegas extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tbodegas.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         tbodegas.setDragEnabled(true);
         tbodegas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -108,8 +116,8 @@ public class Bodegas extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbnuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbnuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -140,11 +148,12 @@ public class Bodegas extends javax.swing.JFrame {
             int row=tbodegas.getSelectedRow();
             int col=0;
             int id=Integer.parseInt(tbodegas.getValueAt(row,col).toString());
+            System.out.println("id: "+id);
             ActualizarBodega act=new ActualizarBodega(this.permisos,id);
             this.dispose();
             act.setVisible(true);
         }catch(NumberFormatException er){
-        
+            System.out.println("error: "+er.getMessage());
         }
     }//GEN-LAST:event_tbodegasMouseClicked
 

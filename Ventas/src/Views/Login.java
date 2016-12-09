@@ -65,7 +65,10 @@ public class Login extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Noto Sans", 1, 18)); // NOI18N
         jLabel2.setText("Clave");
 
+        txtusuario.setText("eestraga");
         txtusuario.setName("txtusuario"); // NOI18N
+
+        txtclave.setText("123456");
 
         jButton2.setText("Cerrar");
         jButton2.setName("cmbcerrar"); // NOI18N
