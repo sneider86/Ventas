@@ -76,6 +76,7 @@ public class ControllerTerceros {
                 combo.addItem(item.key,item.value);
             }
             this.con.cerrarResultyPrepared();
+            this.con.cerrarConexion();
         }catch(Exception err){
         
         }
@@ -226,6 +227,13 @@ public class ControllerTerceros {
             throw new Exception("Digite el numero de documento",new Throwable("Validación"));
         }        
     }
+    /**
+     * Cargar un tercero por documento y tipo documento, si no existe retorna null
+     * @param tipo
+     * @param doc
+     * @return Terceros
+     * @throws Exception 
+     */
     public Terceros cargarTerceroId(String tipo,String doc) throws Exception{
         try{
             if(this.con.getCon().isClosed()){
@@ -243,6 +251,11 @@ public class ControllerTerceros {
             throw new Exception(err.getMessage(), new Throwable(err.getCause().getMessage()));
         }
     }
+    /**
+     * Carga la tabla de los terceros
+     * @return ArrayList
+     * @throws Exception 
+     */
     public ArrayList<Object> loadDataGridAll() throws Exception{
         try{
             if(this.con.getCon().isClosed()){
@@ -255,6 +268,40 @@ public class ControllerTerceros {
             this.con.prepararConsulta(sql);
             ParametrosQuery param[]=new ParametrosQuery[0];
             
+            ResultSet rs=this.con.consultaSeleccionParametros(param);
+            while(rs.next()){
+                Model.Terceros ter=new Model.Terceros(this.con);
+                ter.setTERID(rs.getInt("TER_ID"));
+                ter.setTERTIPODOCUMENTO(rs.getString("TER_TIPODOCUMENTO"));
+                ter.setTERDOCUMENTO(rs.getString("TER_DOCUMENTO"));
+                ter.setNOMBRECOMPLETO(rs.getString("TER_NOMBRECOMPLETO"));
+                ter.setTERDIRECCION1(rs.getString("TER_DIRECCION1"));
+                ter.setTERDIRECCION2(rs.getString("TER_DIRECCION2"));
+                ter.setTERTELEFONO1(rs.getString("TER_TELEFONO1"));
+                ter.setTERTELEFONO2(rs.getString("TER_TELEFONO2"));
+                ter.setTEREMAIL(rs.getString("TER_EMAIL"));
+                ter.setTERFECHANACIMIENTO(rs.getString("TER_FECHANACIMIENTO"));
+                list.add(ter);
+            }
+            this.con.cerrarResultyPrepared();
+            this.con.cerrarConexion();
+            return list;
+        }catch(Exception err){
+            throw new Exception(err.getMessage(),new Throwable("Error al cargar Grilla"));
+        }
+    }
+    public ArrayList<Object> loadDataGridNombre(String nombre) throws Exception{
+        try{
+            if(this.con.getCon().isClosed()){
+                this.initConexion();
+            }
+            ArrayList<Object> list=new ArrayList<>();
+            String sql="SELECT TER_ID,TER_DOCUMENTO,TER_TIPODOCUMENTO,TER_NOMBRECOMPLETO,TER_DIRECCION1, " +
+                            "TER_DIRECCION2,TER_TELEFONO1,TER_TELEFONO2,TER_EMAIL,TER_FECHANACIMIENTO " +
+                            "FROM ven_terceros WHERE TER_NOMBRECOMPLETO LIKE ?";
+            this.con.prepararConsulta(sql);
+            ParametrosQuery param[]=new ParametrosQuery[1];
+            param[0]=new ParametrosQuery(7,nombre);
             ResultSet rs=this.con.consultaSeleccionParametros(param);
             while(rs.next()){
                 Model.Terceros ter=new Model.Terceros(this.con);

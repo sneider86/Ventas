@@ -10,6 +10,7 @@ import Controller.ControllerTerceros;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollBar;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -17,10 +18,12 @@ import javax.swing.JScrollBar;
  */
 public class Terceros extends javax.swing.JFrame {
     private ControllerPermisos permisos;
+    ControllerTerceros controller;
     /**
      * Creates new form Terceros
      */
     public Terceros() {
+        this.controller=new ControllerTerceros();
         initComponents();
     }
     public Terceros(ControllerPermisos permisos) {
@@ -28,18 +31,24 @@ public class Terceros extends javax.swing.JFrame {
         initComponents();
         Object [][] rows = null;
         try{
-            ControllerTerceros controller=new ControllerTerceros();
+            this.controller=new ControllerTerceros();
             ArrayList list=controller.loadDataGridAll();
             rows = new Object[list.size()][10];
             for(int i=0;i<list.size();i++){
                 Model.Terceros ter=(Model.Terceros)list.get(i);
                 rows[i]=new Object[]{ter.getTERID(),ter.getTERDOCUMENTO(),ter.getNOMBRECOMPLETO(),ter.getTERDIRECCION1(),ter.getTERDIRECCION2(),ter.getTERTELEFONO1(),ter.getTERTELEFONO2() };
             }
-            controller.llenarComboTipoDocumento(this.cmbtipodocumento);
+            this.controller.llenarComboTipoDocumento(this.cmbtipodocumento);
         }catch(Exception err){
             JOptionPane.showMessageDialog(null, err.getMessage(), err.getCause().getMessage(),1);
         }
-        javax.swing.table.DefaultTableModel model=new javax.swing.table.DefaultTableModel(rows,new String[]{"Id","Documento","Nombre Completo","Dir°1","Dir°2","Telefono°1","Telefono°2"});
+        javax.swing.table.DefaultTableModel model=new javax.swing.table.DefaultTableModel(rows,new String[]{"Id","Documento","Nombre Completo","Dir°1","Dir°2","Telefono°1","Telefono°2"}){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+               //all cells false
+               return false;
+            }
+        };
         model.isCellEditable(0,0);
         tterceros.setModel(model);
         tterceros.getColumnModel().getColumn(0).setMaxWidth(0);
@@ -84,13 +93,28 @@ public class Terceros extends javax.swing.JFrame {
         setTitle("Terceros");
 
         jLabel1.setText("Tipo Documento");
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+        });
 
         jLabel2.setText("Documento");
 
         txtdocumento.setFont(new java.awt.Font("Noto Sans", 0, 13)); // NOI18N
         txtdocumento.setPlaceholder("Documento");
+        txtdocumento.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtdocumentoKeyPressed(evt);
+            }
+        });
 
         jLabel3.setText("Nombre Completo");
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+        });
 
         grptipobusqueda.add(chkbuq1);
         chkbuq1.setSelected(true);
@@ -108,6 +132,11 @@ public class Terceros extends javax.swing.JFrame {
         });
 
         btnbuscar.setText("Buscar");
+        btnbuscar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnbuscarMouseClicked(evt);
+            }
+        });
 
         tterceros.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -135,6 +164,14 @@ public class Terceros extends javax.swing.JFrame {
         txtnombre.setEditable(false);
         txtnombre.setMargin(new java.awt.Insets(0, 5, 0, 0));
         txtnombre.setPlaceholder("Nombre Completo");
+        txtnombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtnombreKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtnombreKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -162,7 +199,7 @@ public class Terceros extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(txtdocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnbuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -194,7 +231,12 @@ public class Terceros extends javax.swing.JFrame {
         if(this.chkbuq2.isSelected()){
             this.txtnombre.setEditable(true);
             this.txtdocumento.setEditable(false);
-            this.cmbtipodocumento.setEditable(false);
+            this.cmbtipodocumento.setEnabled(false);
+            try{
+                this.cmbtipodocumento.setKey("1");
+            }catch(Exception err){
+                System.out.println(err.getMessage());
+            }
             this.txtdocumento.setText("");
         }
     }//GEN-LAST:event_chkbuq2MouseClicked
@@ -203,11 +245,113 @@ public class Terceros extends javax.swing.JFrame {
         if(this.chkbuq1.isSelected()){
             this.txtnombre.setEditable(false);
             this.txtdocumento.setEditable(true);
-            this.cmbtipodocumento.setEditable(true);
+            this.cmbtipodocumento.setEnabled(true);
             this.txtnombre.setText("");
         }
     }//GEN-LAST:event_chkbuq1MouseClicked
 
+    private void btnbuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnbuscarMouseClicked
+        this.eventBuscar();
+    }//GEN-LAST:event_btnbuscarMouseClicked
+    private void eventBuscar(){
+        try{
+            if(this.chkbuq1.isSelected()){
+                DefaultTableModel dtm=(DefaultTableModel)this.tterceros.getModel();
+                dtm.getDataVector().removeAllElements();
+                dtm.fireTableDataChanged();
+                if(!this.txtdocumento.getText().trim().equals("")){
+                    Model.Terceros ter=this.controller.cargarTerceroId(this.cmbtipodocumento.getKey(),this.txtdocumento.getText());
+                    if(ter!=null){
+                        Object[] row={ter.getTERID(),ter.getTERDOCUMENTO(),ter.getNOMBRECOMPLETO(),ter.getTERDIRECCION1(),ter.getTERDIRECCION2(),ter.getTERTELEFONO1(),ter.getTERTELEFONO2()};
+                        dtm.addRow(row);
+                        this.tterceros.setModel(dtm);
+                    }
+                }else{
+                    this.llenarGridCompleto();
+                }
+            }else{
+                if(this.chkbuq2.isSelected()){
+                    if(!this.txtnombre.getText().trim().equals("")){
+                        this.llenarNombre(this.txtnombre.getText().trim().toUpperCase());
+                    }else{
+                        this.llenarGridCompleto();
+                    }
+                }
+            }
+        }catch(Exception err){
+            JOptionPane.showMessageDialog(null, err.getMessage(),err.getCause().getMessage(),1);
+        }
+    }
+    private void txtdocumentoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtdocumentoKeyPressed
+        if(evt.getKeyCode()==10){
+            this.eventBuscar();
+        }
+    }//GEN-LAST:event_txtdocumentoKeyPressed
+
+    private void txtnombreKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtnombreKeyPressed
+        if(evt.getKeyCode()==10){
+            this.eventBuscar();
+        }
+    }//GEN-LAST:event_txtnombreKeyPressed
+
+    private void txtnombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtnombreKeyReleased
+        this.txtnombre.setText(this.txtnombre.getText().toUpperCase());
+    }//GEN-LAST:event_txtnombreKeyReleased
+
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+        this.chkbuq2.setSelected(true);
+        this.txtnombre.setEditable(true);
+        this.txtdocumento.setEditable(false);
+        this.cmbtipodocumento.setEnabled(false);
+        try{
+            this.cmbtipodocumento.setKey("1");
+        }catch(Exception err){
+            System.out.println(err.getMessage());
+        }
+        this.txtdocumento.setText("");
+        this.eventBuscar();
+    }//GEN-LAST:event_jLabel3MouseClicked
+
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        this.chkbuq1.setSelected(true);
+        this.txtnombre.setEditable(false);
+        this.txtdocumento.setEditable(true);
+        this.cmbtipodocumento.setEnabled(true);
+        this.txtnombre.setText("");
+        this.eventBuscar();
+    }//GEN-LAST:event_jLabel1MouseClicked
+    private void llenarGridCompleto() throws Exception{
+        try{
+            ArrayList list=controller.loadDataGridAll();
+            DefaultTableModel dtm=(DefaultTableModel)this.tterceros.getModel();
+            dtm.getDataVector().removeAllElements();
+            dtm.fireTableDataChanged();
+            for(int i=0;i<list.size();i++){
+                Model.Terceros ter=(Model.Terceros)list.get(i);
+                Object[] row={ter.getTERID(),ter.getTERDOCUMENTO(),ter.getNOMBRECOMPLETO(),ter.getTERDIRECCION1(),ter.getTERDIRECCION2(),ter.getTERTELEFONO1(),ter.getTERTELEFONO2()};
+                dtm.addRow(row);
+                this.tterceros.setModel(dtm);
+            }
+        }catch(Exception err){
+            throw new Exception(err.getMessage(),new Throwable("Error al cargar Grilla"));
+        }
+    }
+    private void llenarNombre(String nombre) throws Exception{
+        try{
+            ArrayList list=controller.loadDataGridNombre(nombre);
+            DefaultTableModel dtm=(DefaultTableModel)this.tterceros.getModel();
+            dtm.getDataVector().removeAllElements();
+            dtm.fireTableDataChanged();
+            for(int i=0;i<list.size();i++){
+                Model.Terceros ter=(Model.Terceros)list.get(i);
+                Object[] row={ter.getTERID(),ter.getTERDOCUMENTO(),ter.getNOMBRECOMPLETO(),ter.getTERDIRECCION1(),ter.getTERDIRECCION2(),ter.getTERTELEFONO1(),ter.getTERTELEFONO2()};
+                dtm.addRow(row);
+                this.tterceros.setModel(dtm);
+            }
+        }catch(Exception err){
+            throw new Exception(err.getMessage(),new Throwable("Error al cargar Grilla"));
+        }
+    } 
     /**
      * @param args the command line arguments
      */
